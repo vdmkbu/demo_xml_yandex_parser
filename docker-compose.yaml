@@ -1,0 +1,76 @@
+version: "3.7"
+services:
+  nginx:
+    build:
+      context: ./docker
+      dockerfile: nginx.docker
+    volumes:
+      - ./:/var/www
+    ports:
+      - "8080:80"
+    depends_on:
+      - php-fpm
+
+  php-fpm:
+    build:
+      context: ./docker
+      dockerfile: php-fpm.docker
+    environment:
+      - "DB_PORT=5432"
+      - "DB_HOST=postgres"
+      - "DB_CONNECTION=pgsql"
+      - "DB_DATABASE=xml"
+      - "DB_USERNAME=xml"
+      - "DB_PASSWORD=123"
+    volumes:
+      - ./:/var/www
+    depends_on:
+      - mysql
+
+  php-cli:
+    build:
+      context: ./docker
+      dockerfile: php-cli.docker
+    environment:
+      - "DB_PORT=3306"
+      - "DB_HOST=mysql"
+      - "DB_CONNECTION=mysql"
+      - "DB_DATABASE=xml"
+      - "DB_USERNAME=xml"
+      - "DB_PASSWORD=123"
+    volumes:
+      - ./:/var/www
+    tty: true
+    depends_on:
+      - mysql
+
+  node:
+    image: node:15.2.1-alpine3.10
+    volumes:
+    - ./:/var/www
+    working_dir: /var/www
+    tty: true
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      - "MYSQL_ROOT_PASSWORD=123"
+      - "MYSQL_USER=xml"
+      - "MYSQL_PASSWORD=123"
+      - "MYSQL_DATABASE=xml"
+    volumes:
+      - ./storage/docker/mysql:/var/lib/mysql
+    ports:
+    - "33061:3306"
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    links:
+      - mysql
+    ports:
+      - "8085:80"
+    environment:
+      - "PMA_HOST=mysql"
+      - "MYSQL_ROOT_PASSWORD=123"
+    depends_on:
+      - mysql
