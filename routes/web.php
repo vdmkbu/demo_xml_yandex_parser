@@ -20,3 +20,12 @@ Auth::routes();
 
 Route::get('/home', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+Route::group([
+    'prefix' => 'admin',
+    'as' => 'admin.',
+    'middleware' => 'can:admin_panel',
+    'namespace' => 'Admin'
+], function () {
+    Route::get('/', [\App\Http\Controllers\Admin\HomeController::class, 'index'])->name('index');
+});
+
