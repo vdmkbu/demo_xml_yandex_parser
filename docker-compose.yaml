@@ -16,9 +16,9 @@ services:
       context: ./docker
       dockerfile: php-fpm.docker
     environment:
-      - "DB_PORT=5432"
-      - "DB_HOST=postgres"
-      - "DB_CONNECTION=pgsql"
+      - "DB_PORT=3306"
+      - "DB_HOST=mysql"
+      - "DB_CONNECTION=mysql"
       - "DB_DATABASE=xml"
       - "DB_USERNAME=xml"
       - "DB_PASSWORD=123"
