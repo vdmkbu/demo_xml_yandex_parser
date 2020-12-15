@@ -33,5 +33,12 @@ Route::group([
     Route::post('/users', [\App\Http\Controllers\Admin\UsersController::class, 'store'])->name('users.store');
     Route::get('/users/{user}/edit', [\App\Http\Controllers\Admin\UsersController::class, 'edit'])->name('users.edit');
     Route::put('/users/{user}', [\App\Http\Controllers\Admin\UsersController::class, 'update'])->name('users.update');
+
+    Route::get('/regions', [\App\Http\Controllers\Admin\RegionController::class, 'index'])->name('regions.index');
+    Route::post('/regions/upload', [\App\Http\Controllers\Admin\RegionController::class, 'import'])->name('regions.import');
+    Route::get('/regions/upload', [\App\Http\Controllers\Admin\RegionController::class, 'upload'])->name('regions.upload');
+    Route::get('/regions/{region}/edit', [\App\Http\Controllers\Admin\RegionController::class, 'edit'])->name('regions.edit');
+    Route::put('/regions/{region}', [\App\Http\Controllers\Admin\RegionController::class, 'update'])->name('regions.update');
+
 });
 
