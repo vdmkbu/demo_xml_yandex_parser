@@ -14,6 +14,9 @@ class User extends Authenticatable
     protected const ROLE_ADMIN = 'admin';
     protected const ROLE_USER = 'user';
 
+    protected const STATUS_ACTIVE = 'active';
+    protected const STATUS_DISABLED = 'disabled';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -47,5 +50,27 @@ class User extends Authenticatable
     public function isAdmin(): bool
     {
         return $this->role === self::ROLE_ADMIN;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->active;
+    }
+
+    public function isDisabled(): bool
+    {
+        return !$this->active;
+    }
+    public static function rolesList(): array
+    {
+        return [self::ROLE_ADMIN, self::ROLE_USER];
+    }
+
+    public static function statusesList(): array
+    {
+        return [
+            1 => self::STATUS_ACTIVE,
+            0 => self::STATUS_DISABLED
+        ];
     }
 }
