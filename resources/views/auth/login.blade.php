@@ -2,7 +2,10 @@
 
 @section('content')
 <main class="sm:container sm:mx-auto sm:max-w-lg sm:mt-10">
-    <example-component></example-component>
+
+    @if (session('error'))
+        <p class="text-red-500 text-xs italic mt-4">{{ session('error') }}</p>
+    @endif
     <div class="flex">
         <div class="w-full">
             <section class="flex flex-col break-words bg-white sm:border-1 sm:rounded-md sm:shadow-sm sm:shadow-lg">
