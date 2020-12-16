@@ -25,6 +25,8 @@ Route::group([
     Route::get('/home/projects', [\App\Http\Controllers\ProjectController::class, 'index'])->name('projects');
     Route::get('/home/projects/create', [\App\Http\Controllers\ProjectController::class, 'create'])->name('projects.create');
     Route::post('/home/projects', [\App\Http\Controllers\ProjectController::class, 'store'])->name('projects.store');
+    Route::get('/home/projects/{project}/edit', [\App\Http\Controllers\ProjectController::class, 'edit'])->name('projects.edit');
+    Route::put('/home/projects/{project}', [\App\Http\Controllers\ProjectController::class, 'update'])->name('projects.update');
 });
 
 
