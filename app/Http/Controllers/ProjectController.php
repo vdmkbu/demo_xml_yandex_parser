@@ -6,6 +6,7 @@ use App\Models\Project;
 use App\Models\Region;
 use App\Models\Word;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class ProjectController extends Controller
 {
@@ -60,6 +61,11 @@ class ProjectController extends Controller
 
     public function edit(Project $project)
     {
+
+        if (Gate::denies('project_owner', $project)) {
+            abort(403, 'Access denied');
+        }
+
         $regions = Region::all();
 
 
@@ -73,6 +79,10 @@ class ProjectController extends Controller
 
     public function update(Project $project, Request $request)
     {
+
+        if (Gate::denies('project_owner', $project)) {
+            abort(403, 'Access denied');
+        }
 
         $this->validate($request, [
             'name' => ['required'],
