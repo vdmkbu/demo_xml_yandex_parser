@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Word extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['word'];
+    public $timestamps = false;
+
+    public function project()
+    {
+        return $this->belongsTo(Project::class);
+    }
 }

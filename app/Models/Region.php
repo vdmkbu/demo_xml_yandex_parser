@@ -11,4 +11,9 @@ class Region extends Model
 
     public $timestamps = false;
     protected $fillable = ['region'];
+
+    public function projects()
+    {
+        return $this->belongsToMany(Project::class);
+    }
 }

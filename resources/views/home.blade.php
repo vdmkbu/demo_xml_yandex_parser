@@ -18,7 +18,19 @@
 
             <div class="w-full p-6">
                 <p class="text-gray-700">
-                    You are logged in!
+                    <button
+                        type="button"
+                        class="border border-indigo-500 bg-indigo-500 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-indigo-600 focus:outline-none focus:shadow-outline"
+                    >
+                        <a href="{{ route('projects') }}">My Projects</a>
+                    </button>
+
+                    <button
+                        type="button"
+                        class="border border-green-500 bg-green-500 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-green-600 focus:outline-none focus:shadow-outline"
+                    >
+                        <a href="{{ route('projects.create') }}">Add Project</a>
+                    </button>
                 </p>
             </div>
         </section>

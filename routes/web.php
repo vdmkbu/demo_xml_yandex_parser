@@ -18,7 +18,15 @@ Route::get('/', function () {
 });
 Auth::routes();
 
-Route::get('/home', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::group([
+   'middleware' => 'auth'
+], function () {
+    Route::get('/home', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/home/projects', [\App\Http\Controllers\ProjectController::class, 'index'])->name('projects');
+    Route::get('/home/projects/create', [\App\Http\Controllers\ProjectController::class, 'create'])->name('projects.create');
+    Route::post('/home/projects', [\App\Http\Controllers\ProjectController::class, 'store'])->name('projects.store');
+});
+
 
 Route::group([
     'prefix' => 'admin',
