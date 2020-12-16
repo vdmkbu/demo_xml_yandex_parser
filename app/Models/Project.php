@@ -16,7 +16,7 @@ class Project extends Model
 
     public function words()
     {
-        return $this->hasMany(Word::class);
+        return $this->belongsToMany(Word::class);
     }
 
     public function isActive(): bool
