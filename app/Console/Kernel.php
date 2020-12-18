@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Commands\CheckPositionsCommand;
 use App\Commands\ResetProjectState;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -27,6 +28,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         $schedule->call(ResetProjectState::class)->dailyAt('13:00');
+        $schedule->call(CheckPositionsCommand::class)->cron('*/5 0-8 * * *');
     }
 
     /**
