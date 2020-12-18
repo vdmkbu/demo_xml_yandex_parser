@@ -9,6 +9,9 @@ class Project extends Model
 {
     use HasFactory;
 
+    protected const STATUS_ACTIVE = 'active';
+    protected const STATUS_DISABLED = 'disabled';
+
     public function regions()
     {
         return $this->belongsToMany(Region::class);
@@ -22,5 +25,13 @@ class Project extends Model
     public function isActive(): bool
     {
         return $this->active;
+    }
+
+    public static function statusesList(): array
+    {
+        return [
+            1 => self::STATUS_ACTIVE,
+            0 => self::STATUS_DISABLED
+        ];
     }
 }

@@ -7,6 +7,7 @@ use App\Models\Region;
 use App\Models\Word;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rule;
 
 class ProjectController extends Controller
 {
@@ -72,7 +73,8 @@ class ProjectController extends Controller
         return view('projects.edit', [
             'project' => $project,
             'regions' => $regions,
-            'selected_regions' => $project->regions()->get()->pluck('id')->toArray()
+            'selected_regions' => $project->regions()->get()->pluck('id')->toArray(),
+            'statuses' => Project::statusesList()
         ]);
 
     }
@@ -88,11 +90,13 @@ class ProjectController extends Controller
             'name' => ['required'],
             'host' => ['required'],
             'regions' => ['required'],
-            'words' => ['required']
+            'words' => ['required'],
+            'active' => ['required', 'boolean', Rule::in(0,1)]
         ]);
 
         $project->name = $request->name;
         $project->host = $request->host;
+        $project->active = $request->active;
         $project->save();
 
         $regions = Region::find($request->regions);
