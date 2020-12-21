@@ -65,7 +65,7 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <p><a href="{{ route('projects.edit', $project) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a></p>
-                                    <p><a href="" class="text-green-600 hover:text-green-900">Stat</a></p>
+                                    <p><a href="{{ route('projects.stat', $project) }}" class="text-green-600 hover:text-green-900">Stat</a></p>
                                 </td>
                             </tr>
                         @endforeach
