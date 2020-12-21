@@ -29,6 +29,7 @@ Route::group([
     Route::put('/home/projects/{project}', [\App\Http\Controllers\ProjectController::class, 'update'])->name('projects.update');
 
     Route::get('/home/projects/{project}/stat', [\App\Http\Controllers\StatController::class, 'index'])->name('projects.stat');
+    Route::get('home/projects/{project}/stat/csv/{date?}', [\App\Http\Controllers\StatController::class, 'csv'])->name('projects.csv');
 });
 
 

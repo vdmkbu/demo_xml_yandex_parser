@@ -6,7 +6,10 @@ use App\Models\Position;
 use App\Models\Project;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use League\Csv\Reader;
+use League\Csv\Writer;
 
 class StatController extends Controller
 {
@@ -105,5 +108,46 @@ class StatController extends Controller
             'positions' => $result,
             'date' => $date,
         ]);
+    }
+
+    public function csv(Project $project, $date)
+    {
+
+        $regions = Position::with(['region'])
+            ->select('region_id')
+            ->where('project_id', $project->id)
+            ->where('created_at', 'LIKE', $date . '%')
+            ->groupBy('region_id')
+            ->get();
+
+
+        // готовим заголовок csv
+        $headers = ['word'];
+        foreach($regions as $region) {
+            $headers[] = $region->region->region;
+        }
+
+
+        // получим список позиций сгруппированных для каждого слова за текущую дату
+        $positions = Position::with(['word'])
+            ->select('word_id', DB::raw('GROUP_CONCAT(pos) as positions'))
+            ->where('project_id', $project->id)
+            ->where('created_at', 'LIKE', $date . '%')
+            ->groupBy('word_id')
+            ->get();
+
+        $body = [];
+        foreach($positions as $position) {
+            $body[] = array_merge([$position->word->word], explode(',', $position->positions));
+
+        }
+
+
+        $csv = Writer::createFromString();
+        $csv->insertOne($headers);
+        $csv->insertAll($body);
+
+        $reader = Reader::createFromString($csv->getContent());
+        return $reader->output($project->name .'-'. $date . '-' .md5(now()) .".csv");
     }
 }
