@@ -30,6 +30,7 @@ Route::group([
 
     Route::get('/home/projects/{project}/stat', [\App\Http\Controllers\StatController::class, 'index'])->name('projects.stat');
     Route::get('home/projects/{project}/stat/csv/{date?}', [\App\Http\Controllers\StatController::class, 'csv'])->name('projects.csv');
+    Route::get('/home/projects/{project}/stat/dynamic', [\App\Http\Controllers\StatController::class, 'dynamic'])->name('projects.dynamic');
 });
 
 

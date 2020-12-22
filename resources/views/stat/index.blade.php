@@ -62,7 +62,8 @@
 
                     <button type="button" class="border border-indigo-500 bg-indigo-500 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-indigo-600 focus:outline-none focus:shadow-outline">
                         <a href="{{ route('projects.csv', [$project, $date]) }}">Load CSV</a></button>
-                    <button type="button" class="border border-green-500 bg-green-500 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-green-600 focus:outline-none focus:shadow-outline"><a href="">Dynamics</a></button>
+                    <button type="button" class="border border-green-500 bg-green-500 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-green-600 focus:outline-none focus:shadow-outline">
+                        <a href="{{ route('projects.dynamic', $project) }}">Dynamics</a></button>
                 </div>
             </div>
         </div>

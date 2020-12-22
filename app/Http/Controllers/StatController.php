@@ -154,4 +154,80 @@ class StatController extends Controller
         $reader = Reader::createFromString($csv->getContent());
         return $reader->output($project->name .'-'. $date . '-' .md5(now()) .".csv");
     }
+
+    public function dynamic(Project $project)
+    {
+        // последние 7 месяцев
+        $months = [];
+        for($month = 7; $month >= 1; $month--) {
+            $months[] = now()->subMonth($month)->endOfMonth()->toDateString();
+        }
+
+
+        // сгруппированные регионы
+        $regions = Position::with(['region'])
+            ->select('region_id')
+            ->where('project_id', $project->id)
+            ->groupBy('region_id')
+            ->get();
+
+        // сгруппированные слова
+        $words = Position::with(['word'])
+            ->select('word_id')
+            ->where('project_id', $project->id)
+            ->groupBy('word_id')
+            ->get();
+
+
+            $result = [];
+            foreach($regions as $region) {
+
+                $rows = [];
+
+                foreach($words as $word) {
+
+                    $row = [$word->word->word];
+
+                    foreach($months as $month) {
+
+                        $position = DB::table('positions')->where('project_id', $project->id)
+                            ->where('region_id', $region->region->id)
+                            ->where('word_id', $word->word->id)
+                            ->where('created_at', 'LIKE', $month . '%')
+                            ->first();
+
+                        if ($position) {
+
+                            $row = array_merge($row, [$position->pos ?: '-']);
+                        }
+                        else {
+                            $row = array_merge($row, ['-']);
+                        }
+
+
+                    }
+
+                    $rows[] = $row;
+
+                    $row = [];
+
+                }
+
+
+                $result[] = [
+                    'region' => $region->region->region,
+                    'header' => array_merge(['Запрос'], $months),
+                    'data' => $rows
+                ];
+
+
+        }
+
+
+
+        return view('stat.dynamic', [
+            'project' => $project,
+            'rows' => $result
+        ]);
+    }
 }
