@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use League\Csv\Reader;
 use League\Csv\Writer;
 
@@ -15,6 +16,10 @@ class StatController extends Controller
 {
     public function index(Project $project, Request $request)
     {
+
+        if (Gate::denies('project_owner', $project)) {
+            abort(403, 'Access denied');
+        }
 
         if ($request->date) {
             $date = date('Y-m-d', strtotime($request->date));
@@ -113,6 +118,10 @@ class StatController extends Controller
     public function csv(Project $project, $date)
     {
 
+        if (Gate::denies('project_owner', $project)) {
+            abort(403, 'Access denied');
+        }
+
         if (!$date) {
             $date = date('Y-m-d', now()->getTimestamp());
         }
@@ -157,6 +166,11 @@ class StatController extends Controller
 
     public function dynamic(Project $project)
     {
+
+        if (Gate::denies('project_owner', $project)) {
+            abort(403, 'Access denied');
+        }
+
         // последние 7 месяцев
         $months = [];
         for($month = 7; $month >= 1; $month--) {
