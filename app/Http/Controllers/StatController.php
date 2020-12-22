@@ -113,6 +113,10 @@ class StatController extends Controller
     public function csv(Project $project, $date)
     {
 
+        if (!$date) {
+            $date = date('Y-m-d', now()->getTimestamp());
+        }
+
         $regions = Position::with(['region'])
             ->select('region_id')
             ->where('project_id', $project->id)
