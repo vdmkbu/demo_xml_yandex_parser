@@ -24,6 +24,7 @@ class RegionImportService
             throw new \Exception('Parsing XML error');
         }
 
+        $regions = [];
         foreach($regions_data as $value) {
             $region = json_decode($value);
             $region_name = $region[1];
@@ -31,5 +32,7 @@ class RegionImportService
 
             $regions[] = ['region' => $region_name, 'internal_id' => $internal_id];
         }
+
+        return $regions;
     }
 }
