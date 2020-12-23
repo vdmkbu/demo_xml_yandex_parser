@@ -34,4 +34,9 @@ class Project extends Model
             0 => self::STATUS_DISABLED
         ];
     }
+
+    public function getRequestCountAttribute(): int
+    {
+        return $this->words->count() * $this->regions->count();
+    }
 }

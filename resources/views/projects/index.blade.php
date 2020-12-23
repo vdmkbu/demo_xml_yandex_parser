@@ -44,7 +44,7 @@
                                                 {{ $project->name }}
                                             </div>
                                             <div class="text-sm text-gray-500">
-                                                request qnt: {{ $project->words->count() * $project->regions->count() }}
+                                                request qnt: {{ $project->request_count }}
                                             </div>
                                         </div>
                                     </div>
