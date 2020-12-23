@@ -41,7 +41,7 @@ class RegionController extends Controller
     public function import(Request $request)
     {
         $this->validate($request, [
-            'file' => ['required', 'file', 'mime:xml']
+            'file' => ['required', 'file', 'mimes:xml']
         ]);
 
         $xml = $request->file('file')->getContent();
