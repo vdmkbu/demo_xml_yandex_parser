@@ -4,10 +4,18 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Region;
+use App\Service\RegionsImport\RegionImportService;
 use Illuminate\Http\Request;
 
 class RegionController extends Controller
 {
+    protected RegionImportService $service;
+
+    public function __construct(RegionImportService $service)
+    {
+        $this->service = $service;
+    }
+
     public function index()
     {
         return view('admin.regions.index', [
@@ -44,24 +52,13 @@ class RegionController extends Controller
             'file' => ['required', 'file', 'mimes:xml']
         ]);
 
-        $xml = $request->file('file')->getContent();
-
-        $xml = simplexml_load_string($xml);
-
-        if (!$xml) {
-            throw new \Exception('XML file with bad format');
+        try {
+            $regions = $this->service->getRegions($request->file('file'));
+        }
+        catch (\Exception $exception) {
+            return back()->with('error', $exception->getMessage());
         }
 
-        $values = $xml->data->insert[1]->values;
-
-        $regions = [];
-        foreach($values as $value) {
-            $region = json_decode($value);
-            $region_name = $region[1];
-            $internal_id = $region[3];
-
-            $regions[] = ['region' => $region_name, 'internal_id' => $internal_id];
-        }
 
         Region::insert($regions);
 
